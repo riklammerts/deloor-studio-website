@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>De Loor Studio — Premium Hospitality Content</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --linen:      #F4EFE7;
+      --linen-deep: #EDE7DC;
+      --linen-dim:  #E0D8CC;
+      --border:     #D4C9B8;
+      --bronze:     #9B6B3A;
+      --bronze-l:   #B8885A;
+      --ink:        #1A1410;
+      --ink-mid:    #3D3630;
+      --ink-dim:    #7A6E62;
+      --dark-bg:    #0E0C0A;
+      --dark-surf:  #141210;
+      --dark-brd:   #222018;
+      --dark-cream: #F0E8DC;
+      --dark-dim:   #8A7E72;
+      --white:      #FFFFFF;
+      --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+      --radius:     3px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--linen);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ──────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--bronze);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.35s var(--ease), height 0.35s var(--ease), background 0.3s;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(155,107,58,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s var(--ease), height 0.4s var(--ease), opacity 0.3s;
+    }
+    .cursor-grow #cursor  { width: 54px; height: 54px; background: rgba(155,107,58,0.12); border: 1px solid var(--bronze); }
+    .cursor-grow #cursor-ring { opacity: 0; }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 52px;
+      background: rgba(244,239,231,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.4s;
+    }
+    nav.scrolled {
+      padding: 14px 52px;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px; font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-logo span { color: var(--bronze); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      color: var(--ink-dim); text-decoration: none;
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--linen); background: var(--ink);
+      padding: 11px 26px; border-radius: var(--radius); text-decoration: none;
+      transition: background 0.3s;
+    }
+    .nav-cta:hover { background: var(--bronze); }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      height: clamp(640px, 90vh, 800px);
+      display: grid;
+      grid-template-columns: 54% 46%;
+      align-items: stretch;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 140px 64px 80px 52px;
+      background: var(--linen);
+      position: relative;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, transparent 0%, var(--border) 30%, var(--border) 70%, transparent 100%);
+    }
+    .hero-overline {
+      font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--bronze); margin-bottom: 36px;
+      opacity: 0; transform: translateY(18px);
+      animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(46px, 5.5vw, 78px);
+      font-weight: 300; line-height: 1.07; letter-spacing: -0.01em;
+      color: var(--ink); margin-bottom: 32px;
+      opacity: 0; transform: translateY(28px);
+      animation: fadeUp 1s var(--ease) 0.35s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--bronze); }
+    .hero-sub {
+      font-size: 15px; color: var(--ink-dim);
+      max-width: 400px; line-height: 1.8; margin-bottom: 52px;
+      opacity: 0; transform: translateY(18px);
+      animation: fadeUp 0.9s var(--ease) 0.5s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; align-items: center;
+      opacity: 0; transform: translateY(18px);
+      animation: fadeUp 0.9s var(--ease) 0.65s forwards;
+    }
+    .btn-dark {
+      display: inline-block; background: var(--ink); color: var(--linen);
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;
+      padding: 15px 34px; border-radius: var(--radius); text-decoration: none;
+      transition: background 0.3s, transform 0.3s var(--ease);
+    }
+    .btn-dark:hover { background: var(--bronze); transform: translateY(-2px); }
+    .btn-line {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink-dim); font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase; text-decoration: none; transition: color 0.25s;
+    }
+    .btn-line:hover { color: var(--ink); }
+    .btn-line svg { transition: transform 0.3s var(--ease); }
+    .btn-line:hover svg { transform: translateX(4px); }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 44px; left: 52px;
+      display: flex; align-items: center; gap: 12px;
+      opacity: 0; animation: fadeUp 1s var(--ease) 1s forwards;
+    }
+    .hero-scroll-hint span { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-dim); }
+    .scroll-bar { width: 36px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+    .scroll-bar::after {
+      content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%;
+      background: var(--bronze); animation: scrollLine 2s ease-in-out 1.2s infinite;
+    }
+    @keyframes scrollLine { 0% { left: -100%; } 100% { left: 100%; } }
+
+    /* ── HERO RIGHT — DARK VIDEO PANE ────────────── */
+    .hero-right {
+      background: var(--dark-bg);
+      position: relative;
+      overflow: hidden;
+      opacity: 0; animation: fadeIn 1.2s var(--ease) 0.4s forwards;
+    }
+    .hero-video-frame {
+      position: absolute; inset: 0;
+      overflow: hidden;
+    }
+    .hero-video-frame::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--dark-bg) 0%, transparent 30%);
+      z-index: 2; pointer-events: none;
+    }
+    .crossfade-a, .crossfade-b {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center center;
+      display: block;
+    }
+    .crossfade-a { animation: xfA 24s ease-in-out infinite; }
+    .crossfade-b { animation: xfB 24s ease-in-out infinite; }
+    .crossfade-c { animation: xfC 24s ease-in-out infinite; }
+    @keyframes xfA {
+      0%, 30%  { opacity: 1; }
+      40%, 95% { opacity: 0; }
+      100%     { opacity: 1; }
+    }
+    @keyframes xfB {
+      0%, 30%  { opacity: 0; }
+      40%, 63% { opacity: 1; }
+      73%, 100%{ opacity: 0; }
+    }
+    @keyframes xfC {
+      0%, 63%  { opacity: 0; }
+      73%, 95% { opacity: 1; }
+      100%     { opacity: 0; }
+    }
+    .hero-video-frame video,
+    .vp { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vp-a { background: linear-gradient(140deg, #1a120a 0%, #2a1c10 35%, #0f1810 70%, #080d16 100%); animation: cS1 9s ease-in-out infinite alternate; }
+    .vp-b { background: linear-gradient(160deg, #0a1016 0%, #0e1a0a 40%, #1a100a 80%, #0d0a14 100%); animation: cS2 11s ease-in-out infinite alternate; }
+    @keyframes cS1 {
+      0%   { background: linear-gradient(140deg,#1a120a,#2a1c10 35%,#0f1810); }
+      50%  { background: linear-gradient(140deg,#0f1810,#1a120a 35%,#2a1c10); }
+      100% { background: linear-gradient(140deg,#2a1c10,#0f1810 35%,#1a120a); }
+    }
+    @keyframes cS2 {
+      0%   { background: linear-gradient(160deg,#0a1016,#0e1a0a 40%,#1a100a); }
+      50%  { background: linear-gradient(160deg,#1a100a,#0a1016 40%,#0e1a0a); }
+      100% { background: linear-gradient(160deg,#0e1a0a,#1a100a 40%,#0a1016); }
+    }
+    .vp-label {
+      position: absolute; bottom: 18px; left: 22px; z-index: 3;
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,232,220,0.45);
+    }
+    .vp-label-a { animation: xfA 24s ease-in-out infinite; }
+    .vp-label-b { animation: xfB 24s ease-in-out infinite; }
+    .vp-label-c { animation: xfC 24s ease-in-out infinite; }
+    .vp-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      z-index: 3; text-align: center; color: rgba(240,232,220,0.18);
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .vp-icon svg { display: block; margin: 0 auto 8px; opacity: 0.35; }
+    .vp-divider { width: 100%; height: 1px; background: var(--dark-brd); }
+
+    /* ── MARQUEE ─────────────────────────────────── */
+    .marquee-wrap {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 16px 0; overflow: hidden; background: var(--linen-deep);
+    }
+    .marquee-track { display: flex; animation: marquee 32s linear infinite; white-space: nowrap; }
+    .m-item {
+      display: inline-flex; align-items: center; gap: 18px; padding: 0 36px;
+      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-dim);
+    }
+    .m-dot { width: 3px; height: 3px; background: var(--bronze); border-radius: 50%; flex-shrink: 0; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ── SECTION BASE ────────────────────────────── */
+    .s-light { background: var(--linen); }
+    .s-linen { background: var(--linen-deep); }
+    .s-dark  { background: var(--dark-bg); }
+    section { padding: 120px 52px; }
+    .s-label { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--bronze); margin-bottom: 20px; }
+    .s-label.dark { color: var(--bronze-l); }
+    .s-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4vw,56px); font-weight: 300; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+    .s-title em { font-style: italic; color: var(--bronze); }
+    .s-title.dark { color: var(--dark-cream); }
+    .s-title.dark em { color: var(--bronze-l); }
+
+    /* ── WHAT WE MAKE ────────────────────────────── */
+    .what-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
+    .what-body { color: var(--ink-dim); max-width: 400px; line-height: 1.8; margin-bottom: 48px; }
+    .stat-row { display: flex; gap: 44px; }
+    .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 300; color: var(--ink); line-height: 1; }
+    .stat-l { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-dim); margin-top: 4px; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); }
+    .w-card {
+      padding: 36px 30px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden; background: var(--linen); transition: background 0.3s;
+    }
+    .w-card:nth-child(2n) { border-right: none; }
+    .w-card:nth-child(3), .w-card:nth-child(4) { border-bottom: none; }
+    .w-card:hover { background: var(--linen-deep); }
+    .w-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+      background: var(--bronze); transition: width 0.5s var(--ease);
+    }
+    .w-card:hover::after { width: 100%; }
+    .w-num { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--border); line-height: 1; margin-bottom: 14px; transition: color 0.3s; }
+    .w-card:hover .w-num { color: var(--bronze); }
+    .w-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+    .w-text { font-size: 13px; color: var(--ink-dim); line-height: 1.7; }
+
+    /* ── PORTFOLIO — DARK SECTION ────────────────── */
+    .portfolio-section { padding: 80px 52px; }
+    .pf-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; }
+    .pf-link {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bronze-l); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: gap 0.3s;
+    }
+    .pf-link:hover { gap: 14px; }
+    .pf-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+    .pf-item { position: relative; overflow: hidden; border-radius: var(--radius); cursor: none; }
+    .pf-item:nth-child(1) { grid-column: 1 / 8;  aspect-ratio: 16/10; }
+    .pf-item:nth-child(2) { grid-column: 8 / 13; aspect-ratio: 3/4; }
+    .pf-item:nth-child(3) { grid-column: 1 / 6;  aspect-ratio: 3/4; }
+    .pf-item:nth-child(4) { grid-column: 6 / 13; aspect-ratio: 16/10; }
+    .pf-bg { position: absolute; inset: 0; transition: transform 0.9s var(--ease); }
+    .pf-item:hover .pf-bg { transform: scale(1.05); }
+    .pg1 { background: linear-gradient(145deg,#1e1508 0%,#2e2010 40%,#101a10 100%); }
+    .pg2 { background: linear-gradient(160deg,#0c1420 0%,#141c0c 50%,#1c1008 100%); }
+    .pg3 { background: linear-gradient(120deg,#1c0e0a 0%,#0c1610 50%,#14120c 100%); }
+    .pf-item video, .pf-item img.pf-media {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.9s var(--ease);
+    }
+    .pf-item:hover video, .pf-item:hover img.pf-media { transform: scale(1.05); }
+    .pf-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.4s; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 22px;
+    }
+    .pf-item:hover .pf-overlay { opacity: 1; }
+    .pf-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bronze-l); margin-bottom: 4px; }
+    .pf-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: var(--white); }
+    .pf-ph {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 1;
+      color: rgba(240,232,220,0.13); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+
+    /* ── LE SORELLINE CAROUSEL ───────────────────── */
+    .sorelline-section { padding: 100px 0; overflow: hidden; }
+    .sorelline-header { padding: 0 52px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; }
+    .sorelline-meta { display: flex; align-items: center; gap: 32px; }
+    .carousel-counter {
+      font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300;
+      color: var(--linen-dim); line-height: 1;
+    }
+    .carousel-counter span { color: var(--ink); }
+    .carousel-nav { display: flex; gap: 10px; }
+    .carousel-btn {
+      width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%;
+      background: transparent; display: flex; align-items: center; justify-content: center;
+      cursor: none; transition: background 0.3s, border-color 0.3s;
+    }
+    .carousel-btn:hover { background: var(--ink); border-color: var(--ink); }
+    .carousel-btn:hover svg path { stroke: var(--linen); }
+    .carousel-btn svg path { stroke: var(--ink-dim); transition: stroke 0.3s; }
+    .carousel-track-wrap {
+      overflow: hidden;
+      cursor: grab;
+      user-select: none;
+      padding: 0 52px;
+    }
+    .carousel-track-wrap.grabbing { cursor: grabbing; }
+    .carousel-track {
+      display: flex;
+      gap: 16px;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
+    }
+    .carousel-slide {
+      flex-shrink: 0;
+      width: calc(32vw);
+      max-width: 480px;
+      aspect-ratio: 3/4;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-slide.wide {
+      width: calc(52vw);
+      max-width: 760px;
+      aspect-ratio: 16/10;
+    }
+    .carousel-img {
+      width: 100%; height: 100%;
+      position: absolute; inset: 0;
+      transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
+      object-fit: cover;
+    }
+    .carousel-slide:hover .carousel-img { transform: scale(1.04); }
+    /* 10 distinct food/restaurant palette gradients */
+    .cs1  { background: linear-gradient(145deg,#2a1a08 0%,#3d2a0e 35%,#1a2010 70%,#0d1008 100%); }
+    .cs2  { background: linear-gradient(160deg,#1e1208 0%,#2e1c0a 40%,#3a2412 70%,#160e06 100%); }
+    .cs3  { background: linear-gradient(130deg,#0e1a10 0%,#1a2c0e 35%,#281e08 65%,#0a0e0a 100%); }
+    .cs4  { background: linear-gradient(155deg,#280e08 0%,#3a1808 35%,#1e120c 65%,#100808 100%); }
+    .cs5  { background: linear-gradient(140deg,#1a1608 0%,#2e2a0a 35%,#1a200e 65%,#0c0e08 100%); }
+    .cs6  { background: linear-gradient(125deg,#0e1410 0%,#182010 35%,#241808 65%,#0a0c0a 100%); }
+    .cs7  { background: linear-gradient(150deg,#221208 0%,#341a0a 35%,#281e10 65%,#140c06 100%); }
+    .cs8  { background: linear-gradient(135deg,#180e0a 0%,#281410 35%,#1e1a0c 65%,#0e0806 100%); }
+    .cs9  { background: linear-gradient(145deg,#0a1810 0%,#0e2214 35%,#1a1808 65%,#080e08 100%); }
+    .cs10 { background: linear-gradient(160deg,#201408 0%,#301e0c 35%,#1a1410 65%,#100c08 100%); }
+    .carousel-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 40px 24px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      opacity: 0; transition: opacity 0.35s; z-index: 2;
+    }
+    .carousel-slide:hover .carousel-caption { opacity: 1; }
+    .caption-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bronze-l); margin-bottom: 4px; }
+    .caption-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: #fff; }
+    .carousel-ph {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 1;
+      color: rgba(240,232,220,0.12); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; text-align: center;
+    }
+    .carousel-progress {
+      padding: 24px 52px 0;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .progress-dot {
+      width: 4px; height: 4px; border-radius: 50%; background: var(--border);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .progress-dot.active { background: var(--bronze); transform: scale(1.5); }
+
+    /* ── PACKAGES — LINEN SECTION ────────────────── */
+    .pkg-header { text-align: center; margin-bottom: 68px; }
+    .pkg-sub { color: var(--ink-dim); max-width: 460px; margin: 0 auto; font-size: 15px; }
+    .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
+    .pkg-card {
+      padding: 48px 40px; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; background: var(--linen-deep);
+      transition: background 0.35s;
+    }
+    .pkg-card:last-child { border-right: none; }
+    .pkg-card:hover { background: var(--linen); }
+    .pkg-card.featured { background: var(--ink); }
+    .pkg-card.featured:hover { background: var(--ink-mid); }
+    .pkg-badge {
+      display: inline-block; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 2px; margin-bottom: 32px;
+    }
+    .pkg-badge.ghost { border: 1px solid var(--border); color: var(--ink-dim); background: transparent; }
+    .pkg-badge.dark-ghost { border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); background: transparent; }
+    .pkg-badge.hot { background: var(--bronze); color: var(--linen); }
+    .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--ink); margin-bottom: 8px; }
+    .pkg-name.light { color: var(--dark-cream); }
+    .pkg-price { display: flex; align-items: baseline; gap: 5px; margin-bottom: 4px; }
+    .pkg-num { font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 300; color: var(--bronze); line-height: 1; }
+    .pkg-num.light { color: var(--bronze-l); }
+    .pkg-unit { font-size: 13px; color: var(--ink-dim); }
+    .pkg-unit.light { color: var(--dark-dim); }
+    .pkg-excl { font-size: 11px; color: var(--ink-dim); margin-bottom: 32px; }
+    .pkg-excl.light { color: var(--dark-dim); }
+    .pkg-div { width: 28px; height: 1px; background: var(--border); margin-bottom: 28px; }
+    .pkg-div.light { background: rgba(255,255,255,0.12); }
+    .pkg-features { list-style: none; margin-bottom: 44px; flex: 1; }
+    .pkg-features li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 13px; color: var(--ink-dim); padding: 10px 0;
+      border-bottom: 1px solid var(--linen-dim); line-height: 1.5;
+    }
+    .pkg-features.light li { color: rgba(240,232,220,0.65); border-bottom-color: rgba(255,255,255,0.08); }
+    .pkg-features li:last-child { border-bottom: none; }
+    .chk { width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--bronze); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .chk.light { border-color: var(--bronze-l); }
+    .chk svg { width: 7px; height: 7px; }
+    .pkg-btn { display: block; text-align: center; padding: 14px; border-radius: var(--radius); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+    .pkg-btn.outline { border: 1px solid var(--border); color: var(--ink-dim); }
+    .pkg-btn.outline:hover { border-color: var(--bronze); color: var(--bronze); }
+    .pkg-btn.inv { background: var(--bronze); color: var(--ink); }
+    .pkg-btn.inv:hover { background: var(--bronze-l); }
+
+    /* ── WHY — LIGHT ─────────────────────────────── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: center; }
+    .why-list { margin-top: 12px; }
+    .why-item {
+      padding: 26px 0; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: start;
+      transition: border-color 0.3s;
+    }
+    .why-item:hover { border-color: var(--bronze); }
+    .why-item:first-child { border-top: 1px solid var(--border); }
+    .why-n { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--bronze); padding-top: 3px; }
+    .why-t { font-size: 14px; color: var(--ink); font-weight: 400; margin-bottom: 6px; }
+    .why-b { font-size: 13px; color: var(--ink-dim); line-height: 1.75; }
+    .why-visual { aspect-ratio: 4/5; border-radius: 3px; overflow: hidden; position: relative; }
+    .why-vis-bg { width: 100%; height: 100%; background: linear-gradient(160deg,#1a1208 0%,#0d1810 30%,#181008 60%,#080d18 100%); animation: cS1 12s ease-in-out infinite alternate; }
+    .why-quote-wrap { position: absolute; bottom: 40px; left: 36px; right: 36px; }
+    .why-quote { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-style: italic; font-weight: 300; color: var(--dark-cream); line-height: 1.45; margin-bottom: 14px; }
+    .why-attr { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze-l); }
+
+    /* ── CTA — DARK ──────────────────────────────── */
+    .cta-section {
+      text-align: center; padding: 160px 52px; position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(155,107,58,0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px,5vw,68px); font-weight: 300; color: var(--dark-cream); line-height: 1.1; margin-bottom: 24px; }
+    .cta-title em { font-style: italic; color: var(--bronze-l); }
+    .cta-sub { color: var(--dark-dim); max-width: 420px; margin: 0 auto 48px; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; align-items: center; }
+    .btn-linen { display: inline-block; background: var(--linen); color: var(--ink); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; padding: 15px 34px; border-radius: var(--radius); text-decoration: none; transition: background 0.3s, transform 0.3s var(--ease); }
+    .btn-linen:hover { background: var(--linen-deep); transform: translateY(-2px); }
+    .btn-ghost-dark { display: inline-flex; align-items: center; gap: 8px; color: var(--dark-dim); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: color 0.25s; }
+    .btn-ghost-dark:hover { color: var(--dark-cream); }
+
+    /* ── CONTACT ─────────────────────────────────── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; }
+    .c-info { margin-top: 44px; display: flex; flex-direction: column; gap: 20px; }
+    .c-info-item { display: flex; flex-direction: column; gap: 4px; }
+    .c-info-lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bronze); }
+    .c-info-val { font-size: 14px; color: var(--ink-dim); text-decoration: none; transition: color 0.25s; }
+    a.c-info-val:hover { color: var(--ink); }
+    .contact-form { display: flex; flex-direction: column; gap: 18px; }
+    .f-group { display: flex; flex-direction: column; gap: 7px; }
+    .f-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim); }
+    .f-input, .f-textarea, .f-select {
+      background: var(--linen); border: 1px solid var(--border); color: var(--ink);
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 300;
+      padding: 13px 16px; border-radius: var(--radius); outline: none; width: 100%;
+      transition: border-color 0.3s;
+    }
+    .f-input:focus, .f-textarea:focus, .f-select:focus { border-color: var(--bronze); }
+    .f-textarea { min-height: 110px; resize: vertical; }
+    .f-select { appearance: none; cursor: pointer; }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .f-submit {
+      background: var(--ink); color: var(--linen); font-family: 'Inter', sans-serif;
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;
+      padding: 15px 36px; border: none; border-radius: var(--radius); cursor: none;
+      transition: background 0.3s, transform 0.3s var(--ease); align-self: flex-start;
+    }
+    .f-submit:hover { background: var(--bronze); transform: translateY(-2px); }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--linen-deep);
+      border-top: 1px solid var(--border);
+      padding: 30px 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .f-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.06em; color: var(--ink-dim); text-decoration: none; }
+    .f-logo span { color: var(--bronze); }
+    .f-copy { font-size: 12px; color: var(--ink-dim); }
+    .f-links { display: flex; gap: 28px; }
+    .f-links a { font-size: 11px; color: var(--ink-dim); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.25s; }
+    .f-links a:hover { color: var(--bronze); }
+
+    /* ── ANIMATIONS ──────────────────────────────── */
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">De Loor Studio</a>
+  <ul class="nav-links">
+    <li><a href="#werk">Werk</a></li>
+    <li><a href="#diensten">Diensten</a></li>
+    <li><a href="#pakketten">Pakketten</a></li>
+    <li><a href="#over">Over</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Plan een gesprek</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;position:relative;">
+  <div class="hero-left">
+    <div class="hero-overline">Foto &nbsp;·&nbsp; Video &nbsp;·&nbsp; Drone</div>
+    <h1 class="hero-title">
+      Content die je<br>
+      venue <em>onvergeet&shy;baar</em><br>
+      maakt.
+    </h1>
+    <p class="hero-sub">
+      Maandelijkse premium content voor boutique hotels, beach clubs en luxe restaurants — zodat jouw locatie eruitziet zoals die voelt.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-dark">Plan een kennismaking</a>
+      <a href="#werk" class="btn-line">
+        Bekijk het werk
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M7.5 2.5l5 5-5 5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-bar"></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-video-frame">
+      <video class="crossfade-a" autoplay muted loop playsinline>
+        <source src="./videos/social-stella.mp4" type="video/mp4">
+      </video>
+      <video class="crossfade-b" autoplay muted loop playsinline>
+        <source src="./videos/social-hoorn.mp4" type="video/mp4">
+      </video>
+      <video class="crossfade-c" autoplay muted loop playsinline style="object-position: center center;">
+        <source src="./videos/Le_Jadis_Mauritius_PoolSuite_Laura_Hospitality_HD_V1.1_VERT.mp4" type="video/mp4">
+      </video>
+      <div class="vp-label vp-label-a">Stella Suites — Boutique Hotel</div>
+      <div class="vp-label vp-label-b">De Hoorn — Loft</div>
+      <div class="vp-label vp-label-c">Le Jadis — Mauritius</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="m-item"><span class="m-dot"></span>Stella Suites</span>
+    <span class="m-item"><span class="m-dot"></span>De Hoorn</span>
+    <span class="m-item"><span class="m-dot"></span>Le Jadis Mauritius</span>
+    <span class="m-item"><span class="m-dot"></span>Le Sorelline</span>
+    <span class="m-item"><span class="m-dot"></span>KIN Makelaars</span>
+    <span class="m-item"><span class="m-dot"></span>Assos Store</span>
+    <span class="m-item"><span class="m-dot"></span>Dopharma</span>
+    <span class="m-item"><span class="m-dot"></span>Van Meel Motoren</span>
+    <span class="m-item"><span class="m-dot"></span>Stella Suites</span>
+    <span class="m-item"><span class="m-dot"></span>De Hoorn</span>
+    <span class="m-item"><span class="m-dot"></span>Le Jadis Mauritius</span>
+    <span class="m-item"><span class="m-dot"></span>Le Sorelline</span>
+    <span class="m-item"><span class="m-dot"></span>KIN Makelaars</span>
+    <span class="m-item"><span class="m-dot"></span>Assos Store</span>
+    <span class="m-item"><span class="m-dot"></span>Dopharma</span>
+    <span class="m-item"><span class="m-dot"></span>Van Meel Motoren</span>
+  </div>
+</div>
+
+<!-- WHAT WE MAKE -->
+<section id="diensten" class="s-light">
+  <div class="what-grid">
+    <div>
+      <div class="s-label reveal">Wat we maken</div>
+      <h2 class="s-title reveal d1">Drie disciplines.<br><em>Één verhaal.</em></h2>
+      <p class="what-body reveal d2">Gasten boeken niet op basis van features. Ze boeken op basis van gevoel. Wij vangen dat gevoel — in foto's die ogen stoppen, video's die sfeer ademen en drone-beelden die de schaal van jouw locatie laten zien.</p>
+      <div class="stat-row reveal d3">
+        <div><div class="stat-n">50+</div><div class="stat-l">Projecten</div></div>
+        <div><div class="stat-n">4+</div><div class="stat-l">Jaar ervaring</div></div>
+        <div><div class="stat-n">72u</div><div class="stat-l">Levertijd</div></div>
+      </div>
+    </div>
+    <div class="card-grid reveal d2">
+      <div class="w-card">
+        <div class="w-num">01</div>
+        <div class="w-title">Fotografie</div>
+        <div class="w-text">Editoriale beelden die de sfeer van je venue vastleggen. AI-ondersteund, altijd consistente stijl.</div>
+      </div>
+      <div class="w-card">
+        <div class="w-num">02</div>
+        <div class="w-title">Video & Reels</div>
+        <div class="w-text">Sfeerfilms en social reels die kijkers laten voelen hoe het is om bij jou te zijn.</div>
+      </div>
+      <div class="w-card">
+        <div class="w-num">03</div>
+        <div class="w-title">Drone</div>
+        <div class="w-text">Luchtbeelden die de ligging en schaal van je locatie in perspectief zetten.</div>
+      </div>
+      <div class="w-card">
+        <div class="w-num">04</div>
+        <div class="w-title">Maandelijks</div>
+        <div class="w-text">Geen eenmalige shoot. Een vaste content-partner die elke maand consistent levert.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO — DARK -->
+<section id="werk" class="s-dark portfolio-section">
+  <div class="pf-header">
+    <div>
+      <div class="s-label dark reveal">Portfolio</div>
+      <h2 class="s-title dark reveal d1">Locaties die we <em>hebben neergezet.</em></h2>
+    </div>
+    <a href="#contact" class="pf-link reveal">
+      Jouw locatie toevoegen
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M7.5 2.5l5 5-5 5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+  <div class="pf-grid reveal">
+    <div class="pf-item">
+      <video autoplay muted loop playsinline>
+        <source src="./videos/social-hoorn.mp4" type="video/mp4">
+      </video>
+      <div class="pf-overlay"><div class="pf-tag">Sfeerfilm — Loft</div><div class="pf-name">De Hoorn</div></div>
+    </div>
+    <div class="pf-item">
+      <video autoplay muted loop playsinline>
+        <source src="./videos/social-stella.mp4" type="video/mp4">
+      </video>
+      <div class="pf-overlay"><div class="pf-tag">Vertical video — Boutique Suite</div><div class="pf-name">Stella Suites</div></div>
+    </div>
+    <div class="pf-item">
+      <video autoplay muted loop playsinline>
+        <source src="./videos/Le_Jadis_Mauritius_PoolSuite_Laura_Hospitality_HD_V1.1_VERT.mp4" type="video/mp4">
+      </video>
+      <div class="pf-overlay"><div class="pf-tag">Luxury Resort — Mauritius</div><div class="pf-name">Le Jadis</div></div>
+    </div>
+    <div class="pf-item">
+      <video autoplay muted loop playsinline>
+        <source src="./videos/boshuis-bonteroos.mp4" type="video/mp4">
+      </video>
+      <div class="pf-overlay"><div class="pf-tag">Sfeerfilm — Landgoed</div><div class="pf-name">De Bonteroos</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LE SORELLINE CAROUSEL — LINEN -->
+<section class="sorelline-section s-light">
+  <div class="sorelline-header">
+    <div>
+      <div class="s-label reveal">Le Sorelline — Restaurant</div>
+      <h2 class="s-title reveal d1">Een italiaans restaurant<br><em>door onze lens.</em></h2>
+    </div>
+    <div class="sorelline-meta reveal d1">
+      <div class="carousel-counter"><span id="cur-slide">01</span> / 10</div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prev" aria-label="Vorige foto">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="carousel-btn" id="next" aria-label="Volgende foto">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-track-wrap reveal" id="carousel-wrap">
+    <div class="carousel-track" id="carousel-track">
+
+      <!-- 1 — Lunchtafel overzicht (wide) -->
+      <div class="carousel-slide wide">
+        <img class="carousel-img" src="./images/schiacciata-broodje-italiaanse-lunchroom-le-sorelline-eindhoven.jpg" alt="Lunchtafel Le Sorelline" style="object-position: center 65%;" />
+        <div class="carousel-caption"><div class="caption-tag">Tafelstyling</div><div class="caption-title">Lunchtafel vol verhaal</div></div>
+      </div>
+
+      <!-- 2 — Vrouw voor de deur met schiacciata -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-01.png" alt="Le Sorelline exterieur" />
+        <div class="carousel-caption"><div class="caption-tag">Exterieur</div><div class="caption-title">Schiacciata voor de deur</div></div>
+      </div>
+
+      <!-- 3 — Raamzitplaatsen, warm daglicht -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-02.jpg" alt="Interieur Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Interieur</div><div class="caption-title">Raamzitplaatsen in daglicht</div></div>
+      </div>
+
+      <!-- 4 — Tiramisu al pistacchio (portrait) -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/gedekte-tafel-tiramisu.jpg" alt="Tiramisu Le Sorelline" style="object-position: center 20%;" />
+        <div class="carousel-caption"><div class="caption-tag">Dessert</div><div class="caption-title">Tiramisu al pistacchio</div></div>
+      </div>
+
+      <!-- 5 — Tafeltje voor twee, overhead (portrait) -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-05.jpg" alt="Tafeltje voor twee Le Sorelline" style="object-position: center center; object-fit: contain; background: #F4EFE7;" />
+        <div class="carousel-caption"><div class="caption-tag">Detail</div><div class="caption-title">Tafeltje voor twee</div></div>
+      </div>
+
+      <!-- 6 — Iced caramel frappé -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-03.jpg" alt="Iced coffee Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Drank</div><div class="caption-title">Caramel frappuccino</div></div>
+      </div>
+
+      <!-- 7 — Medewerker met schiacciata's -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-07.jpg" alt="Team Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Team</div><div class="caption-title">Vers van de lijn</div></div>
+      </div>
+
+      <!-- 8 — Cocktail wordt ingeschonken -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-04.jpg" alt="Cocktail Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Bar</div><div class="caption-title">Espresso martini</div></div>
+      </div>
+
+      <!-- 9 — Matcha latte -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-06.jpg" alt="Matcha latte Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Drank</div><div class="caption-title">Matcha latte</div></div>
+      </div>
+
+      <!-- 10 — Medewerker bij balie met drankenmenu -->
+      <div class="carousel-slide">
+        <img class="carousel-img" src="./images/sorelline-10.jpg" alt="Balie Le Sorelline" />
+        <div class="carousel-caption"><div class="caption-tag">Balie</div><div class="caption-title">Broodjes to go</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="carousel-progress" id="progress">
+    <div class="progress-dot active"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+    <div class="progress-dot"></div>
+  </div>
+</section>
+
+<!-- PACKAGES — LINEN -->
+<section id="pakketten" class="s-linen">
+  <div class="pkg-header">
+    <div class="s-label reveal">Pakketten</div>
+    <h2 class="s-title reveal d1">Investeer in de <em>eerste indruk.</em></h2>
+    <p class="pkg-sub reveal d2">Vaste maandpakketten. Geen verrassingen. Elke maand content die je direct kunt inzetten — en die gasten voor je binnenhaalt.</p>
+  </div>
+  <div class="pkg-grid reveal">
+
+    <div class="pkg-card">
+      <span class="pkg-badge ghost">Starter</span>
+      <div class="pkg-name">Essentials</div>
+      <div class="pkg-price"><span class="pkg-num">750</span><span class="pkg-unit">€ / maand</span></div>
+      <div class="pkg-excl">excl. btw</div>
+      <div class="pkg-div"></div>
+      <ul class="pkg-features">
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>1× fotoshoot per maand (2-3 uur)</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>25-30 bewerkte foto's, klaar voor social</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Levering binnen 72 uur</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Consistente editing stijl</li>
+      </ul>
+      <a href="#contact" class="pkg-btn outline">Aanvragen</a>
+    </div>
+
+    <div class="pkg-card featured">
+      <span class="pkg-badge hot">Meest gekozen</span>
+      <div class="pkg-name light">Content</div>
+      <div class="pkg-price"><span class="pkg-num light">1.250</span><span class="pkg-unit light">€ / maand</span></div>
+      <div class="pkg-excl light">excl. btw</div>
+      <div class="pkg-div light"></div>
+      <ul class="pkg-features light">
+        <li><span class="chk light"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#B8885A" stroke-width="1.2" stroke-linecap="round"/></svg></span>1× fotoshoot + 30-40 bewerkte foto's</li>
+        <li><span class="chk light"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#B8885A" stroke-width="1.2" stroke-linecap="round"/></svg></span>1× sfeerfilm of reel (30-60 sec)</li>
+        <li><span class="chk light"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#B8885A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Optioneel: droneopnames van de locatie</li>
+        <li><span class="chk light"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#B8885A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Levering binnen 72 uur</li>
+        <li><span class="chk light"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#B8885A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Klaar voor Instagram, TikTok & website</li>
+      </ul>
+      <a href="#contact" class="pkg-btn inv">Aanvragen</a>
+    </div>
+
+    <div class="pkg-card">
+      <span class="pkg-badge ghost">Premium</span>
+      <div class="pkg-name">Full Service</div>
+      <div class="pkg-price"><span class="pkg-num">1.950</span><span class="pkg-unit">€ / maand</span></div>
+      <div class="pkg-excl">excl. btw</div>
+      <div class="pkg-div"></div>
+      <ul class="pkg-features">
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>2× fotoshoots + 50-60 bewerkte foto's</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>2× sfeerfilms of reels</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Drone bij elke shoot</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Maandelijkse contentstrategie</li>
+        <li><span class="chk"><svg viewBox="0 0 7 7" fill="none"><path d="M1 3.5l1.8 1.8L6 1.5" stroke="#9B6B3A" stroke-width="1.2" stroke-linecap="round"/></svg></span>Levering binnen 48 uur + directe lijn</li>
+      </ul>
+      <a href="#contact" class="pkg-btn outline">Aanvragen</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY — LIGHT -->
+<section id="over" class="s-light">
+  <div class="why-grid">
+    <div>
+      <div class="s-label reveal">Waarom De Loor</div>
+      <h2 class="s-title reveal d1">Meer gasten.<br><em>Minder gedoe.</em></h2>
+      <div class="why-list">
+        <div class="why-item reveal">
+          <div class="why-n">01</div>
+          <div><div class="why-t">Alles in één hand</div><div class="why-b">Foto, video én drone van één persoon, in één pakket. Geen coördinatie tussen drie leveranciers.</div></div>
+        </div>
+        <div class="why-item reveal d1">
+          <div class="why-n">02</div>
+          <div><div class="why-t">Consistente uitstraling</div><div class="why-b">Elke maand dezelfde stijl en kwaliteit. Jouw feed voelt als één samenhangende campagne.</div></div>
+        </div>
+        <div class="why-item reveal d2">
+          <div class="why-n">03</div>
+          <div><div class="why-t">Altijd op tijd geleverd</div><div class="why-b">Binnen 72 uur na de shoot. Helder gecommuniceerd, geen verrassingen — zodat jij kunt plannen.</div></div>
+        </div>
+        <div class="why-item reveal d3">
+          <div class="why-n">04</div>
+          <div><div class="why-t">Content die converteert</div><div class="why-b">Niet mooie plaatjes. Beelden die meer aanvragen en reserveringen genereren.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual reveal d2">
+      <img src="./images/rik-portret.PNG" alt="Rik Lammerts — De Loor Studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,8,6,0.75) 0%,transparent 55%);"></div>
+      <div class="why-quote-wrap">
+        <div class="why-quote">"Gasten boeken niet op basis van features. Ze boeken op basis van gevoel."</div>
+        <div class="why-attr">Rik Lammerts — De Loor Studio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA — DARK -->
+<section class="s-dark cta-section">
+  <div class="cta-glow"></div>
+  <div class="s-label dark reveal" style="display:inline-block;margin-bottom:24px;">Klaar om te beginnen?</div>
+  <h2 class="cta-title reveal">Laten we jouw venue<br><em>neerzetten.</em></h2>
+  <p class="cta-sub reveal d1">Plan een gratis kennismakingsgesprek van 20 minuten. Ik bekijk jouw situatie en vertel welk pakket het beste aansluit.</p>
+  <div class="cta-btns reveal d2">
+    <a href="#contact" class="btn-linen">Plan een gesprek</a>
+    <a href="mailto:rik@deloor.studio" class="btn-ghost-dark">
+      rik@deloor.studio
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M7.5 2.5l5 5-5 5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT — LINEN -->
+<section id="contact" class="s-linen">
+  <div class="contact-grid">
+    <div>
+      <div class="s-label reveal">Contact</div>
+      <h2 class="s-title reveal d1">Neem<br><em>contact op.</em></h2>
+      <div class="c-info reveal d2">
+        <div class="c-info-item"><span class="c-info-lbl">E-mail</span><a href="mailto:rik@deloor.studio" class="c-info-val">rik@deloor.studio</a></div>
+        <div class="c-info-item"><span class="c-info-lbl">Telefoon</span><a href="tel:+31641730319" class="c-info-val">+31 6 41 73 03 19</a></div>
+        <div class="c-info-item"><span class="c-info-lbl">Instagram</span><a href="https://instagram.com/deloorstudio" target="_blank" class="c-info-val">@deloorstudio</a></div>
+        <div class="c-info-item"><span class="c-info-lbl">Reactie</span><span class="c-info-val">Binnen 24 uur</span></div>
+      </div>
+    </div>
+    <form class="contact-form reveal d1">
+      <div class="f-row">
+        <div class="f-group"><label class="f-label">Naam</label><input type="text" class="f-input" placeholder="Jouw naam" /></div>
+        <div class="f-group"><label class="f-label">Venue / Bedrijf</label><input type="text" class="f-input" placeholder="Naam van je locatie" /></div>
+      </div>
+      <div class="f-group"><label class="f-label">E-mail</label><input type="email" class="f-input" placeholder="jouw@email.nl" /></div>
+      <div class="f-group">
+        <label class="f-label">Pakket interesse</label>
+        <select class="f-select">
+          <option value="" disabled selected>Kies een pakket</option>
+          <option>Essentials — €750/maand</option>
+          <option>Content — €1.250/maand</option>
+          <option>Full Service — €1.950/maand</option>
+          <option>Weet ik nog niet</option>
+        </select>
+      </div>
+      <div class="f-group"><label class="f-label">Vertel over je locatie</label><textarea class="f-textarea" placeholder="Wat voor venue heb je? Wat wil je bereiken met betere content?"></textarea></div>
+      <button type="submit" class="f-submit">Stuur aanvraag →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="f-logo">De Loor Studio</a>
+  <span class="f-copy">© 2026 De Loor Studio</span>
+  <div class="f-links"><a href="#">Privacy</a><a href="https://instagram.com/deloorstudio" target="_blank">Instagram</a></div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a, button, .pf-item, .w-card, .pkg-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
+  });
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.f-submit');
+    btn.textContent = 'Verstuurd ✓';
+    btn.style.background = '#5a7a52';
+    setTimeout(() => { btn.textContent = 'Stuur aanvraag →'; btn.style.background = ''; }, 3000);
+  });
+
+  // ── CAROUSEL ─────────────────────────────────────
+  (function() {
+    const track   = document.getElementById('carousel-track');
+    const wrap    = document.getElementById('carousel-wrap');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const counter = document.getElementById('cur-slide');
+    const dots    = document.querySelectorAll('.progress-dot');
+    const slides  = document.querySelectorAll('.carousel-slide');
+    const total   = slides.length;
+    let   current = 0;
+    let   offset  = 0;
+
+    function getSlideLeft(idx) {
+      let x = 0;
+      for (let i = 0; i < idx; i++) {
+        x += slides[i].offsetWidth + 16;
+      }
+      return x;
+    }
+
+    function goTo(idx) {
+      if (idx < 0) idx = 0;
+      if (idx >= total) idx = total - 1;
+      current = idx;
+      offset = getSlideLeft(idx);
+      track.style.transform = 'translateX(-' + offset + 'px)';
+      counter.textContent = String(idx + 1).padStart(2, '0');
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Drag to scroll
+    let startX = 0, startOffset = 0, dragging = false;
+    wrap.addEventListener('mousedown', e => {
+      dragging = true; startX = e.clientX; startOffset = offset;
+      wrap.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const dx = startX - e.clientX;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(-' + (startOffset + dx) + 'px)';
+    });
+    window.addEventListener('mouseup', e => {
+      if (!dragging) return;
+      dragging = false;
+      wrap.classList.remove('grabbing');
+      track.style.transition = '';
+      const dx = startX - e.clientX;
+      if (Math.abs(dx) > 60) {
+        goTo(dx > 0 ? current + 1 : current - 1);
+      } else {
+        goTo(current);
+      }
+    });
+
+    // Touch
+    wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; startOffset = offset; }, {passive: true});
+    wrap.addEventListener('touchend', e => {
+      const dx = startX - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 50) goTo(dx > 0 ? current + 1 : current - 1);
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') goTo(current + 1);
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+    });
+
+    goTo(0);
+  })();
+</script>
+</body>
+</html>
